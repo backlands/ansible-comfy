@@ -1,27 +1,27 @@
 ---
 - name: Install Homeschick.
   git:
-    repo: git@github.com:andsens/homeshick.git
-    dest: /home/{{ ansible_user_id }}/.homesick/repos/homeshick
+    repo: ssh://git@github.com/andsens/homeshick.git
+    dest: "/home/{{ ansible_user_id }}/.homesick/repos/homeshick"
     update: yes
     accept_hostkey: yes
 
 - name: Check if dotfiles already exist.
   stat:
-    path: /home/{{ ansible_user_id }}/.homesick/repos/dotfiles
+    path: "/home/{{ ansible_user_id }}/.homesick/repos/dotfiles"
   register: dotfiled
 
 - name: Clone dotfile repository.
-  shell: /home/{{ ansible_user_id }}/.homesick/repos/homeshick/bin/homeshick clone --batch {{ dotfiles }}
+  shell: "/home/{{ ansible_user_id }}/.homesick/repos/homeshick/bin/homeshick clone --batch {{ dotfiles }}"
   when: dotfiled.stat.exists == false
 
 - name: Pull dotfile repository.
-  shell: /home/{{ ansible_user_id }}/.homesick/repos/homeshick/bin/homeshick pull --batch dotfiles
+  shell: "/home/{{ ansible_user_id }}/.homesick/repos/homeshick/bin/homeshick pull --batch dotfiles"
   when: dotfiled.stat.exists == true
 
 - name: Symlink dotfiles to home.
-  shell: /home/{{ ansible_user_id }}/.homesick/repos/homeshick/bin/homeshick symlink --batch dotfiles
+  shell: "/home/{{ ansible_user_id }}/.homesick/repos/homeshick/bin/homeshick symlink --batch dotfiles"
 
 - name: Set shell to ZSH.
-  user: name={{ ansible_user_id }} shell=/usr/bin/zsh
+  user: name="{{ ansible_user_id }}" shell=/usr/bin/zsh
   become: yes
