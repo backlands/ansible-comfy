@@ -1,22 +1,21 @@
 ---
 - name: Add Git Maintainers repository.
-  become: yes
   apt_repository:
     repo: 'ppa:git-core/ppa'
+  become: yes
 
 - name: Add pi-rho developer repository.
-  become: yes
   apt_repository:
     repo: 'ppa:pi-rho/dev'
+  become: yes
 
 - name: Update aptitude.
-  become: yes
   apt:
     update_cache: yes
     cache_valid_time: 3600
+  become: yes
 
 - name: Install common software packages.
-  become: yes
   apt:
     name: "{{ item }}"
     state: latest
@@ -26,3 +25,4 @@
     - tmux
     - vim
     - curl
+  become: yes
