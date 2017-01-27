@@ -1,4 +1,10 @@
 ---
+- name: Push SSH key to system.
+  authorized_key:
+    user: "{{ ansible_user_id }}"
+    state: present
+    key: "{{ ssh_key }}"
+
 - name: Add Git Maintainers repository.
   apt_repository:
     repo: 'ppa:git-core/ppa'
